@@ -40,7 +40,7 @@ jobs:
          pwd 
          lshw
       - name: print env
-        run: echo ${ GITHUB_JOB }
+        run: echo ${GITHUB_JOB}
 
   env:
     runs-on: ubuntu-latest
