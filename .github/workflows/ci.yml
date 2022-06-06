@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build
-        run: g++ main.cpp -o app_$ImageOS
+        run: g++ main.cpp -o app_${{ImageOS}}
   test: 
     runs-on: ubuntu-latest
     needs: [build, sys_info]
