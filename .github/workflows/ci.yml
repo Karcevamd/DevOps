@@ -85,7 +85,6 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           document: app-** 
-          debug: main.exe
           message: |
             ${{ github.actor }} created commit: 
             Commit message: ${{ github.event.commits[0].message }}
