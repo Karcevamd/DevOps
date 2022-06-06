@@ -34,7 +34,7 @@ jobs:
 #       - name: check tools
 #         run: g++ -v
 
-  build:
+  build_macos:
 #     needs: [sys_info]
     runs-on: macos-latest
 #    env:
@@ -50,6 +50,42 @@ jobs:
         with: 
           name: my_app
           path: app_**
+          retention-days: 1
+        
+
+  build_ubuntu:
+#     needs: [sys_info]
+    runs-on: ubuntu-latest
+#    env:
+#      local_env: 
+    steps:
+      - uses: actions/checkout@v3
+      - name: build
+        run: |
+          g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+          ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with: 
+          name: my_app
+          path: app_**
+          retention-days: 1
+
+  build_win:
+#     needs: [sys_info]
+    runs-on: windows-latest
+#    env:
+#      local_env: 
+    steps:
+      - uses: actions/checkout@v3
+      - name: build
+        run: cl /EHsc main.cpp
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with: 
+          name: my_app
+          path: main.exe
+          retention-days: 1
         
 #   test: 
 #     runs-on: ubuntu-latest
