@@ -18,27 +18,12 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-#   sys_info:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     env:
-#       local_env: job
-
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#       #- uses: actions/checkout@v3
-
-#       # Runs a single command using the runners shell
-#       - name: check tools
-#         run: g++ -v
 
   build_macos:
-#     needs: [sys_info]
-    runs-on: macos-latest
-#    env:
-#      local_env: 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
       - name: build
@@ -53,23 +38,23 @@ jobs:
           retention-days: 1
         
 
-  build_ubuntu:
-#     needs: [sys_info]
-    runs-on: ubuntu-latest
-#    env:
-#      local_env: 
-    steps:
-      - uses: actions/checkout@v3
-      - name: build
-        run: |
-          g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
-          ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with: 
-          name: my_app
-          path: app_**
-          retention-days: 1
+#   build_ubuntu:
+# #     needs: [sys_info]
+#     runs-on: ubuntu-latest
+# #    env:
+# #      local_env: 
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: build
+#         run: |
+#           g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+#           ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+#       - name: Upload a Build Artifact
+#         uses: actions/upload-artifact@v3.1.0
+#         with: 
+#           name: my_app
+#           path: app_**
+#           retention-days: 1
 
   build_win:
 #     needs: [sys_info]
