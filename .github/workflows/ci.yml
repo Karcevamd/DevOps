@@ -24,6 +24,7 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest]
         gcc_o: ["-O0", "-O3"]
+        python_v: [2, 3]
         exclude: 
           - os: macos-latest
             gcc_o: "-O3"
@@ -38,6 +39,7 @@ jobs:
         run: |
           g++ main.cpp ${{ matrix.ggs_o }} -o ${{ env.app_name }}
           ./${{ env.app_name }}
+          echo python${{ matrix.python_v }}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with: 
