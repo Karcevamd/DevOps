@@ -26,7 +26,10 @@ jobs:
         gcc_o: ["-O0", "-O3"]
         exclude: 
           - os: macos-latest
-            gss_o: "-O3"
+            gcc_o: "-O3"
+        include:
+          - os: macos-latest
+            gcc_o: "-O2"
     env:
        app_name: app-${{ matrix.os }}${{ matrix.ggs_o }}_ver.${{ github.run_number }}
     steps:
