@@ -25,6 +25,8 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest]
         gcc_o: ["-O0", "-O3"]
+    env:
+       app_name: app-${RUNNER_OS}${{ matrix.ggs_o }}_ver.${GITHUB_RUN_NUMBER}
     steps:
       - uses: actions/checkout@v3
       - name: build
@@ -35,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with: 
           name: my_app
-          path: app-**
+          path: ${{ env.app_name }}
           retention-days: 1
         
 
