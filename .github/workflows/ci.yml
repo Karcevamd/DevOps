@@ -53,9 +53,12 @@ jobs:
           retention-days: 1
         
   report:
+    if: success()
     runs-on: ubuntu-latest
     needs: [build, build_win]
     steps:
+      - name: print secrets
+        run: echo ${{ secrets.TELEGRAM_TO }}
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
