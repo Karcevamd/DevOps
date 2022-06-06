@@ -36,7 +36,7 @@ jobs:
         with: 
           name: ${{ env.artifact_name }}
           path: ${{ env.app_name }}
-          retention-days: 1
+          retention-days: 45
 
   build_win:
     runs-on: windows-latest
@@ -50,10 +50,10 @@ jobs:
         with: 
           name: ${{ env.artifact_name }}
           path: main.exe
-          retention-days: 1
+          retention-days: 45
         
   report:
-    if: failure() && github.ref == 'rfs/heads/main'
+    if: failure(job) && github.ref == 'rfs/heads/main'
     runs-on: ubuntu-latest
     needs: [build, build_win]
     steps:
@@ -84,16 +84,8 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: |
-            app-** 
-            main.exe
+          document: app-** 
           message: |
             ${{ github.actor }} created commit: 
             Commit message: ${{ github.event.commits[0].message }}
             Repository: ${{ github.repository }}
-          
-    
-       
-       
-       
-    
