@@ -38,19 +38,19 @@ jobs:
           path: ${{ env.app_name }}
           retention-days: 45
 
-#   build_win:
-#     runs-on: windows-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: ilammy/msvc-dev-cmd@v1
-#       - name: build
-#         run: cl /EHsc main.cpp
-#       - name: Upload a Build Artifact
-#         uses: actions/upload-artifact@v3.1.0
-#         with: 
-#           name: ${{ env.artifact_name }}
-#           path: main.exe
-#           retention-days: 45
+  build_win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: build
+        run: cl /EHsc main.cpp
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with: 
+          name: ${{ env.artifact_name }}
+          path: main.exe
+          retention-days: 45
         
   report:
     if: failure() || github.ref == 'rfs/heads/main'
@@ -85,6 +85,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           document: app-** 
+          message_file: main.exe
           message: |
             ${{ github.actor }} created commit: 
             Commit message: ${{ github.event.commits[0].message }}
