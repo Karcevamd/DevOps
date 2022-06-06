@@ -40,6 +40,7 @@ jobs:
 #    env:
 #      local_env: 
     steps:
+      - uses: actions/checkout@v3
       - name: build
         run: g++ main.cpp -o app_$ImageOS
   test: 
