@@ -19,16 +19,17 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  build_macos:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
+        gcc_o: ["-O0", "-O3"]
     steps:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+          g++ main.cpp ${{ matrix.ggs_o }} -o app-${RUNNER_OS}${{ matrix.ggs_o }}_ver.${GITHUB_RUN_NUMBER}
           ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
