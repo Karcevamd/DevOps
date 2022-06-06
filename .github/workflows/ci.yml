@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 # Controls when the workflow will run
@@ -23,14 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
-        gcc_o: ["-O0", "-O3"]
-        python_v: [2, 3]
-        exclude: 
-          - os: macos-latest
-            gcc_o: "-O3"
-        include:
-          - os: macos-latest
-            gcc_o: "-O2"
+#         gcc_o: ["-O0", "-O3"]
     env:
        app_name: app-${{ matrix.os }}${{ matrix.ggs_o }}_ver.${{ github.run_number }}
     steps:
@@ -46,31 +37,9 @@ jobs:
           name: my_app
           path: ${{ env.app_name }}
           retention-days: 1
-        
-
-#   build_ubuntu:
-# #     needs: [sys_info]
-#     runs-on: ubuntu-latest
-# #    env:
-# #      local_env: 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: build
-#         run: |
-#           g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
-#           ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
-#       - name: Upload a Build Artifact
-#         uses: actions/upload-artifact@v3.1.0
-#         with: 
-#           name: my_app
-#           path: app_**
-#           retention-days: 1
 
   build_win:
-#     needs: [sys_info]
     runs-on: windows-latest
-#    env:
-#      local_env: 
     steps:
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
@@ -83,14 +52,23 @@ jobs:
           path: main.exe
           retention-days: 1
         
-#   test: 
-#     runs-on: ubuntu-latest
-#     needs: [build, sys_info]
-#     steps:
-#        - name: run_test
-#          run: sleep 20
-    
- # export:
+  report:
+    runs-on: ubuntu-latest
+    needs: [build, build_win]
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
     
        
        
